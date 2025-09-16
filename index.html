@@ -1,132 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Complaint App Prototype</title>
-<style>
-body { font-family: Arial, sans-serif; margin:0; background:#f9f9f9; }
-.screen { display:none; padding:20px; }
-.active { display:block; }
-.header { font-size:20px; margin-bottom:10px; }
-.button { background:#4CAF50; color:#fff; border:none; padding:10px 15px; margin:5px 0; cursor:pointer; }
-.button:hover { background:#45a049; }
-.inline { display:inline-block; margin-right:5px; }
-.table { border-collapse: collapse; width:100%; margin-top:10px; }
-.table th, .table td { border:1px solid #ccc; padding:8px; text-align:left; }
-textarea { width:100%; margin:5px 0; }
-input[type=text], input[type=password] { width:100%; margin:5px 0; padding:5px; }
-.feedback { width:100%; margin-top:5px; }
-.statusBox { background:#f0f0f0; padding:10px; margin-top:10px; border-radius:5px; }
-</style>
+  <meta charset="UTF-8">
+  <title>Complaint App Prototype</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; background:#f9f9f9; }
+    .screen { display:none; padding:20px; }
+    .active { display:block; }
+    .header { font-size:20px; margin-bottom:10px; }
+    .button { background:#4CAF50; color:#fff; border:none; padding:10px 15px; margin:5px 0; cursor:pointer; }
+    .button:hover { background:#45a049; }
+    .inline { display:inline-block; margin-right:5px; }
+    .table { border-collapse: collapse; width:100%; margin-top:10px; }
+    .table th, .table td { border:1px solid #ccc; padding:8px; text-align:left; }
+    textarea { width:100%; margin:5px 0; }
+    input[type=text], input[type=password] { width:100%; margin:5px 0; padding:5px; }
+    .feedback { width:100%; margin-top:5px; }
+    .statusBox { background:#f0f0f0; padding:10px; margin-top:10px; border-radius:5px; }
+  </style>
 </head>
 <body>
 
-<!-- Language Select -->
-<div id="screen1" class="screen active">
-  <div class="header">Choose your Language</div>
-  <button class="button" onclick="setLanguage('en')">English</button>
-  <button class="button" onclick="setLanguage('ta')">தமிழ்</button>
-  <button class="button" onclick="setLanguage('hi')">हिन्दी</button>
-</div>
-
-<!-- Dashboard -->
-<div id="screen2" class="screen">
-  <div class="header" id="dashboardHeader">Dashboard</div>
-  <button class="button" onclick="goTo('screenFileComplaint')">File a Complaint</button>
-  <button class="button" onclick="trackComplaintPrompt()">Track Complaint</button>
-  <button class="button" onclick="goTo('screenAdminLogin')">View Complaints</button>
-</div>
-
-<!-- File Complaint -->
-<div id="screenFileComplaint" class="screen">
-  <div class="header">File a Complaint</div>
-  <div>
-    <strong>Select Category:</strong><br>
-    <input type="checkbox" name="category" value="Road"> Road<br>
-    <input type="checkbox" name="category" value="Water"> Water<br>
-    <input type="checkbox" name="category" value="Electricity"> Electricity<br>
+  <!-- Language Select -->
+  <div id="screen1" class="screen active">
+    <div class="header">Choose your Language</div>
+    <button class="button" onclick="setLanguage('en')">English</button>
+    <button class="button" onclick="setLanguage('ta')">தமிழ்</button>
+    <button class="button" onclick="setLanguage('hi')">हिन्दी</button>
   </div>
-  <div style="margin-top:10px;">
-    <button class="button" onclick="capturePhoto()">Take On-Site Photo</button>
-    <div id="photoPreview" style="margin-top:5px; display:none;"></div>
-    <div id="locationPreview" style="margin-top:5px;"></div>
-  </div>
-  <div style="margin-top:10px;">
-    <textarea id="textDesc" placeholder="Describe the issue (text)"></textarea>
-    <button class="button" onclick="recordVoice()">Record Voice (mock)</button>
-    <div id="voicePreview" style="margin-top:5px;"></div>
-  </div>
-  <div style="margin-top:10px;">
-    <input type="text" id="userName" placeholder="Your Name (optional)">
-    <input type="text" id="userMobile" placeholder="Mobile Number (optional)">
-  </div>
-  <label><input type="checkbox" id="agreeTerms"> I agree to terms</label><br>
-  <button class="button" onclick="submitComplaint()">Submit Complaint</button>
-</div>
 
-<!-- Submission Success + Status Tracking -->
-<div id="screenSubmission" class="screen">
-  <div class="header">Complaint Verified</div>
-  <p>Complaint submitted successfully!</p>
-  <p>Your Complaint ID: <strong id="submittedId"></strong></p>
-  <div class="statusBox">
-    <strong>Status Timeline:</strong>
-    <ul id="statusTimeline"></ul>
+  <!-- Dashboard -->
+  <div id="screen2" class="screen">
+    <div class="header" id="dashboardHeader">Dashboard</div>
+    <button class="button" onclick="goTo('screenFileComplaint')">File a Complaint</button>
+    <button class="button" onclick="trackComplaintPrompt()">Track Complaint</button>
+    <button class="button" onclick="goTo('screenAdminLogin')">View Complaints</button>
   </div>
-  <button class="button" onclick="goTo('screen2')">Back to Dashboard</button>
-</div>
 
-<!-- Admin Login -->
-<div id="screenAdminLogin" class="screen">
-  <div class="header">Admin Login</div>
-  <input type="text" id="adminUser" placeholder="Username"><br>
-  <input type="password" id="adminPass" placeholder="Password"><br>
-  <button class="button" onclick="adminLogin()">Login</button>
-</div>
+  <!-- File Complaint -->
+  <div id="screenFileComplaint" class="screen">
+    <div class="header">File a Complaint</div>
+    <div>
+      <strong>Select Category:</strong><br>
+      <input type="checkbox" name="category" value="Road"> Road<br>
+      <input type="checkbox" name="category" value="Water"> Water<br>
+      <input type="checkbox" name="category" value="Electricity"> Electricity<br>
+    </div>
+    <div style="margin-top:10px;">
+      <button class="button" onclick="capturePhoto()">Take On-Site Photo</button>
+      <div id="photoPreview" style="margin-top:5px; display:none;"></div>
+      <div id="locationPreview" style="margin-top:5px;"></div>
+    </div>
+    <div style="margin-top:10px;">
+      <textarea id="textDesc" placeholder="Describe the issue (text)"></textarea>
+      <button class="button" onclick="recordVoice()">Record Voice (mock)</button>
+      <div id="voicePreview" style="margin-top:5px;"></div>
+    </div>
+    <div style="margin-top:10px;">
+      <input type="text" id="userName" placeholder="Your Name (optional)">
+      <input type="text" id="userMobile" placeholder="Mobile Number (optional)">
+    </div>
+    <label><input type="checkbox" id="agreeTerms"> I agree to terms</label><br>
+    <button class="button" onclick="submitComplaint()">Submit Complaint</button>
+  </div>
 
-<!-- Admin Dashboard -->
-<div id="screenAdminDashboard" class="screen">
-  <div class="header">Complaints</div>
-  <table class="table">
-    <thead>
-      <tr><th>ID</th><th>Category</th><th>Status</th><th>Name</th><th>Mobile</th><th>Action</th></tr>
-    </thead>
-    <tbody id="complaintTable"></tbody>
-  </table>
-  <button class="button" onclick="adminLogout()">Logout</button>
-</div>
+  <!-- Submission Success -->
+  <div id="screenSubmission" class="screen">
+    <div class="header">Complaint Verified</div>
+    <p>Complaint submitted successfully!</p>
+    <p>Your Complaint ID: <strong id="submittedId"></strong></p>
+    <div class="statusBox">
+      <strong>Status Timeline:</strong>
+      <ul id="statusTimeline"></ul>
+    </div>
+    <button class="button" onclick="goTo('screen2')">Back to Dashboard</button>
+  </div>
+
+  <!-- Admin Login -->
+  <div id="screenAdminLogin" class="screen">
+    <div class="header">Admin Login</div>
+    <input type="text" id="adminUser" placeholder="Username"><br>
+    <input type="password" id="adminPass" placeholder="Password"><br>
+    <button class="button" onclick="adminLogin()">Login</button>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div id="screenAdminDashboard" class="screen">
+    <div class="header">Complaints</div>
+    <table class="table">
+      <thead>
+        <tr><th>ID</th><th>Category</th><th>Status</th><th>Name</th><th>Mobile</th><th>Action</th></tr>
+      </thead>
+      <tbody id="complaintTable"></tbody>
+    </table>
+    <button class="button" onclick="adminLogout()">Logout</button>
+  </div>
 
 <script>
 let complaints = [];
-let lastComplaint={};
-let currentLang='en';
+let lastComplaint = {};
+let currentLang = 'en';
 
-// Language selection
-function setLanguage(lang){currentLang=lang; goTo('screen2');}
+// 🔤 Translations
+const translations = {
+  en: {
+    dashboard: "Dashboard",
+    fileComplaint: "File a Complaint",
+    trackComplaint: "Track Complaint",
+    viewComplaints: "View Complaints",
+    fileComplaintHeader: "File a Complaint",
+    selectCategory: "Select Category:",
+    road: "Road", water: "Water", electricity: "Electricity",
+    takePhoto: "Take On-Site Photo",
+    describe: "Describe the issue (text)",
+    recordVoice: "Record Voice (mock)",
+    name: "Your Name (optional)",
+    mobile: "Mobile Number (optional)",
+    agree: "I agree to terms",
+    submit: "Submit Complaint",
+    verified: "Complaint Verified",
+    submittedSuccess: "Complaint submitted successfully!",
+    yourId: "Your Complaint ID:",
+    statusTimeline: "Status Timeline:",
+    back: "Back to Dashboard",
+    adminLogin: "Admin Login",
+    username: "Username",
+    password: "Password",
+    login: "Login",
+    complaints: "Complaints",
+    logout: "Logout"
+  },
+  ta: {
+    dashboard: "டாஷ்போர்டு",
+    fileComplaint: "புகார் பதிவு",
+    trackComplaint: "புகார் நிலை அறிய",
+    viewComplaints: "புகார்கள் பார்க்க",
+    fileComplaintHeader: "புகார் பதிவு",
+    selectCategory: "வகையை தேர்வு செய்யவும்:",
+    road: "சாலை", water: "தண்ணீர்", electricity: "மின்சாரம்",
+    takePhoto: "நிகழ்நிலை புகைப்படம் எடுக்கவும்",
+    describe: "பிரச்சினையை விவரிக்கவும்",
+    recordVoice: "குரல் பதிவு (பாசாங்கு)",
+    name: "உங்கள் பெயர் (விருப்பம்)",
+    mobile: "அலைபேசி எண் (விருப்பம்)",
+    agree: "நிபந்தனைகளுக்கு உடன்படுகிறேன்",
+    submit: "புகார் சமர்ப்பிக்க",
+    verified: "புகார் சரிபார்க்கப்பட்டது",
+    submittedSuccess: "புகார் வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது!",
+    yourId: "உங்கள் புகார் எண்:",
+    statusTimeline: "நிலை காலவரிசை:",
+    back: "டாஷ்போர்டுக்கு திரும்ப",
+    adminLogin: "நிர்வாகி உள்நுழைவு",
+    username: "பயனர் பெயர்",
+    password: "கடவுச்சொல்",
+    login: "உள்நுழை",
+    complaints: "புகார்கள்",
+    logout: "வெளியேறு"
+  },
+  hi: {
+    dashboard: "डैशबोर्ड",
+    fileComplaint: "शिकायत दर्ज करें",
+    trackComplaint: "शिकायत ट्रैक करें",
+    viewComplaints: "शिकायतें देखें",
+    fileComplaintHeader: "शिकायत दर्ज करें",
+    selectCategory: "श्रेणी चुनें:",
+    road: "सड़क", water: "पानी", electricity: "बिजली",
+    takePhoto: "ऑन-साइट फोटो लें",
+    describe: "समस्या का विवरण दें",
+    recordVoice: "आवाज़ रिकॉर्ड करें (नकली)",
+    name: "आपका नाम (वैकल्पिक)",
+    mobile: "मोबाइल नंबर (वैकल्पिक)",
+    agree: "नियम और शर्तों से सहमत हूँ",
+    submit: "शिकायत सबमिट करें",
+    verified: "शिकायत सत्यापित",
+    submittedSuccess: "शिकायत सफलतापूर्वक दर्ज की गई!",
+    yourId: "आपकी शिकायत आईडी:",
+    statusTimeline: "स्थिति समयरेखा:",
+    back: "डैशबोर्ड पर वापस जाएं",
+    adminLogin: "एडमिन लॉगिन",
+    username: "उपयोगकर्ता नाम",
+    password: "पासवर्ड",
+    login: "लॉगिन",
+    complaints: "शिकायतें",
+    logout: "लॉगआउट"
+  }
+};
 
-// Navigation
+// 🈯 Apply translations
+function setLanguage(lang) {
+  currentLang = lang;
+  applyTranslations();
+  goTo('screen2');
+}
+
+function applyTranslations() {
+  const t = translations[currentLang];
+  if(!t) return;
+
+  // Dashboard
+  document.getElementById("dashboardHeader").innerText = t.dashboard;
+  document.querySelector("button[onclick=\"goTo('screenFileComplaint')\"]").innerText = t.fileComplaint;
+  document.querySelector("button[onclick=\"trackComplaintPrompt()\"]").innerText = t.trackComplaint;
+  document.querySelector("button[onclick=\"goTo('screenAdminLogin')\"]").innerText = t.viewComplaints;
+
+  // File Complaint
+  document.querySelector("#screenFileComplaint .header").innerText = t.fileComplaintHeader;
+  document.querySelector("#screenFileComplaint strong").innerText = t.selectCategory;
+  let checkboxes = document.querySelectorAll("input[name='category']");
+  checkboxes[0].nextSibling.textContent = " " + t.road;
+  checkboxes[1].nextSibling.textContent = " " + t.water;
+  checkboxes[2].nextSibling.textContent = " " + t.electricity;
+  document.querySelector("#screenFileComplaint button[onclick='capturePhoto()']").innerText = t.takePhoto;
+  document.getElementById("textDesc").placeholder = t.describe;
+  document.querySelector("#screenFileComplaint button[onclick='recordVoice()']").innerText = t.recordVoice;
+  document.getElementById("userName").placeholder = t.name;
+  document.getElementById("userMobile").placeholder = t.mobile;
+  document.getElementById("agreeTerms").nextSibling.textContent = " " + t.agree;
+  document.querySelector("#screenFileComplaint button[onclick='submitComplaint()']").innerText = t.submit;
+
+  // Submission
+  document.querySelector("#screenSubmission .header").innerText = t.verified;
+  document.querySelector("#screenSubmission p").innerText = t.submittedSuccess;
+  document.getElementById("submittedId").previousSibling.textContent = " " + t.yourId + " ";
+  document.querySelector("#statusTimeline").previousSibling.textContent = t.statusTimeline;
+  document.querySelector("#screenSubmission button").innerText = t.back;
+
+  // Admin login
+  document.querySelector("#screenAdminLogin .header").innerText = t.adminLogin;
+  document.getElementById("adminUser").placeholder = t.username;
+  document.getElementById("adminPass").placeholder = t.password;
+  document.querySelector("#screenAdminLogin button").innerText = t.login;
+
+  // Admin dashboard
+  document.querySelector("#screenAdminDashboard .header").innerText = t.complaints;
+  document.querySelector("#screenAdminDashboard button").innerText = t.logout;
+}
+
+// 🌐 Navigation
 function goTo(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-// Mock Photo & Location
+// 📸 Mock Photo & Location
 function capturePhoto(){
   lastComplaint.photo="https://via.placeholder.com/300";
   lastComplaint.timestamp=new Date().toLocaleString();
   lastComplaint.location="GPS: Lat 12.9716, Long 77.5946";
-  document.getElementById('photoPreview').innerHTML=`<img src="${lastComplaint.photo}" style="width:100%;max-width:300px;">`;
+  document.getElementById('photoPreview').innerHTML=<img src="${lastComplaint.photo}" style="width:100%;max-width:300px;">;
   document.getElementById('photoPreview').style.display="block";
-  document.getElementById('locationPreview').innerText=`${lastComplaint.location}\nTime: ${lastComplaint.timestamp}`;
+  document.getElementById('locationPreview').innerText=${lastComplaint.location}\nTime: ${lastComplaint.timestamp};
 }
 
-// Mock Voice Recording
+// 🎙 Mock Voice Recording
 function recordVoice(){
   lastComplaint.voice="Voice message recorded (mock)";
   document.getElementById('voicePreview').innerText=lastComplaint.voice;
 }
 
-// Submit Complaint
+// 📩 Submit Complaint
 function submitComplaint(){
   if(!document.getElementById('agreeTerms').checked){alert("Agree to terms."); return;}
   let cats=[...document.querySelectorAll('input[name="category"]:checked')].map(c=>c.value).join(", ");
@@ -151,19 +283,19 @@ function submitComplaint(){
   goTo('screenSubmission');
 }
 
-// Show Status Timeline after submission
+// 📊 Status Timeline
 function updateStatusTimeline(id){
   let complaint=complaints.find(c=>c.id===id);
   let ul=document.getElementById('statusTimeline');
   ul.innerHTML="";
   complaint.timeline.forEach(t=>{
     let li=document.createElement("li");
-    li.textContent=`${t.date}: ${t.status} (${t.by})`;
+    li.textContent=${t.date}: ${t.status} (${t.by});
     ul.appendChild(li);
   });
 }
 
-// Admin Login
+// 🔑 Admin Login
 function adminLogin(){
   let u=document.getElementById('adminUser').value;
   let p=document.getElementById('adminPass').value;
@@ -171,7 +303,7 @@ function adminLogin(){
   else alert("Invalid login");
 }
 
-// Render Admin Dashboard
+// 📋 Render Admin Dashboard
 function renderAdminDashboard(){
   let tbody=document.getElementById('complaintTable'); tbody.innerHTML="";
   complaints.forEach((c,idx)=>{
@@ -192,17 +324,17 @@ function renderAdminDashboard(){
   });
 }
 
-// Update status
+// 🛠 Update status
 function updateStatus(idx,status){
   complaints[idx].status=status;
   complaints[idx].timeline.push({status,date:new Date().toLocaleString(),by:"Admin"});
   renderAdminDashboard();
 }
 
-// View Complaint & Feedback
+// 👀 View Complaint & Feedback
 function viewComplaint(idx){
   let c=complaints[idx];
-  let info=`ID: ${c.id}\nCategory: ${c.category}\nStatus: ${c.status}\nName: ${c.name}\nMobile: ${c.mobile}\nDescription: ${c.description}\nPhoto: ${c.photo}\nVoice: ${c.voice}\nLocation: ${c.location}\nTimestamp: ${c.timestamp}\nTimeline:\n${c.timeline.map(t=>t.date+": "+t.status+" ("+t.by+")").join("\n")}`;
+  let info=ID: ${c.id}\nCategory: ${c.category}\nStatus: ${c.status}\nName: ${c.name}\nMobile: ${c.mobile}\nDescription: ${c.description}\nPhoto: ${c.photo}\nVoice: ${c.voice}\nLocation: ${c.location}\nTimestamp: ${c.timestamp}\nTimeline:\n${c.timeline.map(t=>t.date+": "+t.status+" ("+t.by+")").join("\n")};
   if(c.status==="Resolved"){
     let fb=prompt("Enter feedback for this resolved complaint:",c.feedback||"");
     if(fb) c.feedback=fb;
@@ -211,10 +343,10 @@ function viewComplaint(idx){
   alert(info);
 }
 
-// Logout
+// 🚪 Logout
 function adminLogout(){goTo('screenAdminLogin');}
 
-// New: Track complaint prompt function
+// 🔍 Track complaint
 function trackComplaintPrompt(){
   let id = prompt("Enter Complaint ID to track:");
   if(!id) return;
@@ -223,9 +355,9 @@ function trackComplaintPrompt(){
     alert("Complaint not found!");
     return;
   }
-  let info = `ID: ${complaint.id}\nCategory: ${complaint.category}\nStatus: ${complaint.status}\nTimeline:\n`;
+  let info = ID: ${complaint.id}\nCategory: ${complaint.category}\nStatus: ${complaint.status}\nTimeline:\n;
   complaint.timeline.forEach(t=>{
-    info += `${t.date}: ${t.status} (${t.by})\n`;
+    info += ${t.date}: ${t.status} (${t.by})\n;
   });
   alert(info);
 }
